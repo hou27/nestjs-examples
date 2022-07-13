@@ -34,22 +34,13 @@ export class UploadService {
       // }
       try {
         const uploadKey = `${Date.now() + file.originalname}`;
-        const upload = await this.S3
-          // .getSignedUrlPromise('putObject', {
-          //   Key: `${Date.now() + file.originalname}`,
-          //   Body: file.buffer,
-          //   Bucket: this.options.buketname,
-          //   ContentType: 'image/jpeg',
-          //   ACL: this.ACL,
-          // });
-          .putObject({
-            Key: uploadKey,
-            Body: file.buffer,
-            Bucket: this.options.buketname,
-            ContentType: 'image/jpeg',
-            ACL: this.ACL,
-          })
-          .promise();
+        const upload = await this.S3.putObject({
+          Key: uploadKey,
+          Body: file.buffer,
+          Bucket: this.options.buketname,
+          ContentType: 'image/jpeg',
+          ACL: this.ACL,
+        }).promise();
         console.log(upload);
 
         this.S3.getObject(
