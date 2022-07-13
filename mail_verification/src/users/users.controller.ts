@@ -4,7 +4,12 @@ import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
 import { AuthUser } from 'src/auth/auth-user.decorator';
 import { User } from './entities/user.entity';
-import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Role } from 'src/auth/role.decorator';
 import { RoleGuard } from 'src/auth/role.guard';
 
@@ -21,6 +26,7 @@ export class UserController {
     description: '현재 유저의 정보를 반환합니다.',
     type: User,
   })
+  @ApiBearerAuth('Authorization')
   @Role(['Any'])
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get('me')

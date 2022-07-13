@@ -7,7 +7,12 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { User } from 'src/users/entities/user.entity';
 import { AuthUser } from './auth-user.decorator';
 import { AuthService } from './auth.service';
@@ -54,6 +59,7 @@ export class AuthController {
     description: '로그아웃 성공 여부를 알려줍니다.',
     type: LogoutOutput,
   })
+  @ApiBearerAuth('Authorization')
   @UseGuards(JwtAuthGuard)
   @Get('logout')
   async logout(@AuthUser() user: User): Promise<LogoutOutput> {
@@ -65,6 +71,7 @@ export class AuthController {
     description: '회원탈퇴 성공 여부를 알려줍니다.',
     type: DeleteAccountOutput,
   })
+  @ApiBearerAuth('Authorization')
   @UseGuards(JwtAuthGuard)
   @Delete('delete')
   async deleteAccount(@AuthUser() user: User): Promise<DeleteAccountOutput> {
