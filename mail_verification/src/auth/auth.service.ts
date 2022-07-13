@@ -73,7 +73,6 @@ export class AuthService {
       const verification = await this.verifications.save(
         this.verifications.create({ user: newUser }),
       );
-      console.log(verification);
 
       this.mailService.sendVerificationEmail(
         newUser.email,
