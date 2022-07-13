@@ -1,6 +1,5 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { MailService } from 'src/mail/mail.service';
 import { User } from 'src/users/entities/user.entity';
 import { AuthUser } from './auth-user.decorator';
 import { AuthService } from './auth.service';
@@ -10,7 +9,7 @@ import {
 } from './dtos/create-account.dto';
 import { LoginBodyDto, LoginOutput, LogoutOutput } from './dtos/login.dto';
 import { RefreshTokenDto, RefreshTokenOutput } from './dtos/token.dto';
-import { VerifyEmailInput, VerifyEmailOutput } from './dtos/verify-email.dto';
+import { VerifyEmailOutput } from './dtos/verify-email.dto';
 import { JwtAuthGuard } from './jwt/jwt.guard';
 
 @Controller('auth')
@@ -76,10 +75,8 @@ export class AuthController {
     description: '이메일 인증 성공 여부를 알려줍니다.',
     type: LoginOutput,
   })
-  @Post('verify-email')
-  async verifyEmail(
-    @Body() verifyEmailBody: VerifyEmailInput,
-  ): Promise<VerifyEmailOutput> {
-    return await this.authService.verifyEmail(verifyEmailBody);
+  @Get('verify-email')
+  async verifyEmail(@Query('code') code: string): Promise<VerifyEmailOutput> {
+    return await this.authService.verifyEmail(code);
   }
 }

@@ -19,7 +19,7 @@ export class User extends CoreEntity {
   name: string;
 
   @ApiProperty({ example: 'ex@g.com', description: 'User Email' })
-  @Column()
+  @Column({ unique: true })
   @IsEmail()
   email: string;
 
