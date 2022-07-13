@@ -9,6 +9,7 @@ import {
   CreateAccountBodyDto,
   CreateAccountOutput,
 } from './dtos/create-account.dto';
+import { DeleteAccountOutput } from './dtos/delete-account.dto';
 import { LoginBodyDto, LoginOutput, LogoutOutput } from './dtos/login.dto';
 import { RefreshTokenDto, RefreshTokenOutput } from './dtos/token.dto';
 import { ValidateUserDto, ValidateUserOutput } from './dtos/validate-user.dto';
@@ -100,6 +101,20 @@ export class AuthService {
       }
     } catch (error) {
       return { ok: false, error };
+    }
+  }
+
+  async deleteAccount(userId: number): Promise<DeleteAccountOutput> {
+    try {
+      const { affected } = await this.users.delete(userId);
+
+      if (affected === 1) {
+        return { ok: true };
+      }
+      return { ok: false, error: 'Failed on delete account' };
+    } catch (e) {
+      console.log(e);
+      return { ok: false, error: "Couldn't delete account" };
     }
   }
 

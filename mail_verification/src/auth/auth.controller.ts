@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/users/entities/user.entity';
 import { AuthUser } from './auth-user.decorator';
@@ -7,6 +15,7 @@ import {
   CreateAccountBodyDto,
   CreateAccountOutput,
 } from './dtos/create-account.dto';
+import { DeleteAccountOutput } from './dtos/delete-account.dto';
 import { LoginBodyDto, LoginOutput, LogoutOutput } from './dtos/login.dto';
 import { RefreshTokenDto, RefreshTokenOutput } from './dtos/token.dto';
 import { VerifyEmailOutput } from './dtos/verify-email.dto';
@@ -51,6 +60,17 @@ export class AuthController {
     return await this.authService.logout(user.id);
   }
 
+  @ApiOperation({ summary: '회원탈퇴', description: '회원탈퇴 메서드입니다.' })
+  @ApiCreatedResponse({
+    description: '회원탈퇴 성공 여부를 알려줍니다.',
+    type: DeleteAccountOutput,
+  })
+  @UseGuards(JwtAuthGuard)
+  @Delete('delete')
+  async deleteAccount(@AuthUser() user: User): Promise<DeleteAccountOutput> {
+    return await this.authService.deleteAccount(user.id);
+  }
+
   @ApiOperation({
     summary: '토큰 재발행',
     description: 'access, refresh 토큰을 재발행하는 메서드입니다.',
@@ -59,7 +79,7 @@ export class AuthController {
     description: '재발행된 토큰들을 반환합니다.',
     type: RefreshTokenOutput,
   })
-  @Post('token')
+  @Post('reissue')
   async regenerateToken(
     @Body() regenerateBody: RefreshTokenDto,
   ): Promise<RefreshTokenOutput> {
