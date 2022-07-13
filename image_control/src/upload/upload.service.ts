@@ -16,14 +16,26 @@ export class UploadService {
           secretAccessKey: this.options.secretkey,
         },
       });
+      // try {
+      //   const upload = await new AWS.S3()
+      //     .createBucket({ Bucket: this.options.buketname })
+      //     .promise();
+      //   console.log(file);
+      //   console.log(upload);
+      // } catch (error) {
+      //   console.log('Nested Error : ', error);
+      // }
       try {
         const upload = await new AWS.S3()
-          .createBucket({ Bucket: this.options.buketname })
+          .putObject({
+            Key: `${Date.now() + file.originalname}`,
+            Body: file.buffer,
+            Bucket: this.options.buketname,
+          })
           .promise();
-        console.log(file);
         console.log(upload);
       } catch (error) {
-        console.log('Nested Error : ', error);
+        console.log(error);
       }
     } catch (error) {
       console.log('Error : ', error);
