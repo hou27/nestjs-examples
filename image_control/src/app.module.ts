@@ -29,7 +29,11 @@ import { UploadModule } from './upload/upload.module';
     UsersModule,
     CommonModule,
     AuthModule,
-    UploadModule,
+    UploadModule.forRoot({
+      accesskey: process.env.AWS_ACCESS_KEY,
+      secretkey: process.env.AWS_SECRET_KEY,
+      buketname: process.env.AWS_BUCKET_NAME,
+    }),
   ],
   controllers: [],
   providers: [],
