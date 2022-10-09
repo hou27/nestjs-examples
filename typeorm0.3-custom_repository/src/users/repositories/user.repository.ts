@@ -7,10 +7,9 @@ export interface UserRepository extends Repository<User> {
   getUserWithPassword(userId: number): Promise<any>;
 }
 
-export const customUserRepositoryMethods: Pick<
-  UserRepository,
-  'getUserWithPassword'
-> = {
+type CustomUserRepository = Pick<UserRepository, 'getUserWithPassword'>;
+
+export const customUserRepositoryMethods: CustomUserRepository = {
   async getUserWithPassword(userId: number): Promise<any> {
     try {
       const user = await this.users.findOne({
