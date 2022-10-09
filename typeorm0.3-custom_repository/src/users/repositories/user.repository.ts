@@ -11,7 +11,6 @@ export const customUserRepositoryMethods: Pick<
   UserRepository,
   'getUserWithPassword'
 > = {
-  // Get access token from Kakao Auth Server
   async getUserWithPassword(userId: number): Promise<any> {
     try {
       const user = await this.users.findOne({
